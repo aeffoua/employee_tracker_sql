@@ -1,5 +1,10 @@
 DROP DATABASE IF EXISTS employee_tracker_db;
--- Creates the "inventory_db" database --
+
+-- DROP TABLE IF EXISTS departments
+-- DROP TABLE IF EXISTS employees
+-- DROP TABLE IF EXISTS roles
+
+
 CREATE DATABASE employee_tracker_db;
 USE employee_tracker_db;
 CREATE TABLE departments (

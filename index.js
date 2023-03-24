@@ -1,29 +1,36 @@
-var inquirer = require('inquirer');
+const InquirerHelper= require('./utils/inquirerHelper.js')
+const {menuQuestions, addDepartmentQuestions}= require ('./utils/questions')
+let inquirerHelper= new InquirerHelper([])
 
-module.exports =[
 
-    {
-        type: 'list',
-        name: 'main menu',
-        message: 'what would you like to do?',
-        choices: ['Add Department','Add Role','Add Employee','View Departments','View Roles', 'View Employees''Update An Employee Role','Nevermind']
 
-    },
-
-    {
-        type: 'list',
-        name: 'department list',
-        message: 'what is the name of the department?',
-        choices: ['sales','engineering','finance','legal']
-        
-    },
-
-    {
-        type: 'list',
-        name: 'rolelist',
-        message: 'what is the name of the role?',
-        choices: ['sales lead','salesperson','lead engineer','lawyer','software engineer','account manager','Accountant','legal team lead']
-        
-    },
+async function showMenu(){
     
-]
+    inquirerHelper.setQuestion(menuQuestions)
+    let response= await inquirerHelper.getUserInput()
+    return response 
+}
+async function showQuestions(questions){
+    inquirerHelper.setQuestion(questions)
+    let response= await inquirerHelper.getUserInput()
+    return response 
+}
+
+async function main(){
+    
+    let choice = await showMenu()
+    console.log(choice)
+    switch(choice.menuChoice){
+        case 'addDepartment':
+            let responses= await showQuestions(addDepartmentQuestions)
+            console.log(responses)
+            break 
+        default:  
+            console.log('over')
+
+
+    }
+}
+main()
+
+
