@@ -28,72 +28,76 @@ const menuChoices = [  {    name: 'Add Department',    value: 'addDepartment'  }
       ],
 
 
-      addRoleQuestions : [
-        {
-          type: 'input',
-          name: 'title',
-          message: 'What is the title of the role?',
-          validate: function(value) {
-            if (value.trim().length < 1) {
-              return 'Please enter the title of the role.';
+      addRoleQuestions : (departments)=> {
+        return [
+          {
+            type: 'input',
+            name: 'title',
+            message: 'What is the title of the role?',
+            validate: function(value) {
+              if (value.trim().length < 1) {
+                return 'Please enter the title of the role.';
+              }
+              return true;
             }
-            return true;
-          }
-        },
-        {
-          type: 'number',
-          name: 'salary',
-          message: 'What is the salary of the role?',
-          validate: function(value) {
-            if (isNaN(value) || value < 0) {
-              return 'Please enter a valid salary.';
+          },
+          {
+            type: 'number',
+            name: 'salary',
+            message: 'What is the salary of the role?',
+            validate: function(value) {
+              if (isNaN(value) || value < 0) {
+                return 'Please enter a valid salary.';
+              }
+              return true;
             }
-            return true;
+          },
+          {
+            type: 'list',
+            name: 'department',
+            message: 'What department does the role belong to?',
+            choices: departments
           }
-        },
-        {
-          type: 'list',
-          name: 'department',
-          message: 'What department does the role belong to?',
-          choices: ['Sales', 'Marketing', 'IT', 'Finance']
-        }
-      ],
-      addEmployeeQuestions :[
-        {
-          type: 'input',
-          name: 'firstName',
-          message: 'What is the first name of the employee?',
-          validate: function(value) {
-            if (value.trim().length < 1) {
-              return 'Please enter the first name of the employee.';
+        ]
+      },
+      addEmployeeQuestions :(role)=> {
+        return [
+          {
+            type: 'input',
+            name: 'first_name',
+            message: 'What is the first name of the employee?',
+            validate: function(value) {
+              if (value.trim().length < 1) {
+                return 'Please enter the first name of the employee.';
+              }
+              return true;
             }
-            return true;
-          }
-        },
-        {
-          type: 'input',
-          name: 'lastName',
-          message: 'What is the last name of the employee?',
-          validate: function(value) {
-            if (value.trim().length < 1) {
-              return 'Please enter the last name of the employee.';
+          },
+          {
+            type: 'input',
+            name: 'last_name',
+            message: 'What is the last name of the employee?',
+            validate: function(value) {
+              if (value.trim().length < 1) {
+                return 'Please enter the last name of the employee.';
+              }
+              return true;
             }
-            return true;
+          },
+          {
+            type: 'list',
+            name: 'role',
+            message: 'What is the role of the employee?',
+            choices: role
+          },
+          {
+            type: 'list',
+            name: 'manager_id',
+            message: 'Who is your manager?',
+            choices: ['Alfredo', 'Mike', 'Tianna',"I don't know yet"]
           }
-        },
-        {
-          type: 'list',
-          name: 'role',
-          message: 'What is the role of the employee?',
-          choices: ['Sales Manager', 'Marketing Manager', 'IT Manager', 'Finance Manager', 'Sales Representative', 'Marketing Representative', 'IT Specialist', 'Financial Analyst']
-        },
-        {
-          type: 'list',
-          name: 'manager',
-          message: 'Who is your manager?',
-          choices: ['Alfredo', 'Mike', 'Tianna',"I don't know yet"]
-        }
-      ]
+        ]
+      }
     }
 
 

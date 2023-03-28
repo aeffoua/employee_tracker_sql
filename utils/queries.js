@@ -1,34 +1,43 @@
-// let insertRoles= 'insert into roles(title,salary,department_id) values("manager",70000,1)'
-// let insertDepartments= 'insert into departments (name) values("hr")'
-// let insertEmployees='insert into employees(first_name,last_name,role_id,manager_id) values("Hackeem","Aya",1,1)'
-// let selectDepartments='select * from departments;'
-// let selectRoles="select * from roles"
-// let selectEmployees= "select * from employees"
 function showEmployee () {
     return `
     select * from employees
     `}
- function generateRole({salary,department_id,title}) {
+ function generateRole({salary,department,title}) {
         return `
-        insert into roles(title,salary,department_id) values(${title},${salary},${department_id})`
+        insert into roles(title,salary,department_id) values('${title}',${salary},${department})`
     }
 function generateDpt(name) {
         return `
         insert into departments (name) values('${name}')
         `
     }
-function generateEmployee({first_name,last_name,role_id,manager_id}) {
+function generateEmployee({first_name,last_name,role_id}) {
         return `
-        insert into roles(first_name,last_name,role_id,manager_id) values(${first_name},${last_name},${role_id},${manager_id})`
+        insert into roles(first_name,last_name,role_id) values('${first_name}','${last_name}',${role_id})`
     }
 function showRoles () {
         return `
-        select * from roles
+        select r.title as title, r.salary as salary, d.name as department  from roles as r inner join departments as d on r.department_id=d.id 
         `}
 function showDpt () {
             return `
             select name from departments
             `}
+function getDepartmentId(name){
+    return `
+    select id from departments where name= '${name}' limit 1
+    `
+}
+function getRoleId(title){
+    return`
+    select id from roles where title= '${title}' limit 1
+    `
+}
+function getRoleTitle(){
+    return`
+    select title as name from roles
+    `
+}
     
 module.exports={
     showEmployee,
@@ -36,7 +45,10 @@ module.exports={
     generateDpt,
     generateEmployee, 
     showRoles, 
-    showDpt
+    showDpt,
+    getDepartmentId,
+    getRoleId,
+    getRoleTitle
 
 }
 

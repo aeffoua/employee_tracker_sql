@@ -49,7 +49,7 @@ class DbHelper{
                          else{
                             resolve(results)
                         }
-                         pool.end()
+                    
                      })
                     
                 }

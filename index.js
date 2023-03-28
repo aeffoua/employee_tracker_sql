@@ -1,7 +1,7 @@
 const InquirerHelper= require('./utils/inquirerHelper.js')
 const {menuQuestions, addDepartmentQuestions, addRoleQuestions, addEmployeeQuestions}= require ('./utils/questions')
 let inquirerHelper= new InquirerHelper([])
-const {generateDpt,showDpt}= require('./utils/queries.js')
+const {generateDpt,showDpt, getDepartmentId, generateRole, showRoles, generateEmployee, getRoleTitle, getRoleId}= require('./utils/queries.js')
 const {dbHelper}= require('./utils/database')
 
 
@@ -32,12 +32,30 @@ async function main(){
             main()
             break 
         case 'addRole':
-             responses= await showQuestions(addRoleQuestions)
-            console.log(responses)
+            let query=addRoleQuestions(await getDepartment())
+             responses= await showQuestions(query)
+             let departmentId= await dbHelper.executeQuery(getDepartmentId(responses.department))
+             responses.department= departmentId[0].id 
+             let saveRole= await dbHelper.executeQuery(generateRole(responses))
+            console.log(saveRole)
             main()
             break 
+
+        case 'addEmployee':
+            let queryEmployee= addEmployeeQuestions(await getRoleByTitle())
+            responses= await showQuestions(queryEmployee)
+            let roleId= await dbHelper.executeQuery(getRoleId(responses.role))
+            responses.role_id= roleId[0].id
+            let saveEmployee= await dbHelper.executeQuery(generateEmployee(responses))
+            console.log(saveEmployee)
+            main()
+            break 
+
+
+
+
         case 'quit':
-                
+                        
                console.log('thank you for using our app')
               
                break 
@@ -47,18 +65,41 @@ async function main(){
            main()
             break 
         case 'showDepartments':
-                responses= await dbHelper.executeQuery(showDpt())
+          responses= await getDepartment()      
                console.table(responses)
               main()
                break 
+        case 'showRoles':
+                responses= await getRoles()
+                    console.table(responses)
+                    main()
+                    break
         default:  
             console.log('wrong choice')
             main()
+
+         
+            
+        
 
 
 
     }
 }
+async function getDepartment(){
+    let responses= await dbHelper.executeQuery(showDpt())
+    return responses 
+}
+
+async function getRoles(){
+    let responses = await dbHelper.executeQuery(showRoles())
+    return responses
+}
+async function getRoleByTitle(){
+    let responses= await dbHelper.executeQuery(getRoleTitle())
+    return responses 
+}
 main()
+
 
 
