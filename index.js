@@ -1,7 +1,8 @@
 const InquirerHelper= require('./utils/inquirerHelper.js')
 const {menuQuestions, addDepartmentQuestions, addRoleQuestions, addEmployeeQuestions}= require ('./utils/questions')
 let inquirerHelper= new InquirerHelper([])
-
+const {generateDpt,showDpt}= require('./utils/queries.js')
+const {dbHelper}= require('./utils/database')
 
 
 async function showMenu(){
@@ -24,7 +25,10 @@ async function main(){
     switch(choice.menuChoice){
         case 'addDepartment':
             responses= await showQuestions(addDepartmentQuestions)
-            console.log(responses)
+            let departmentQuery= generateDpt(responses.name)
+            console.log(departmentQuery)
+            let saveData=await dbHelper.executeQuery(departmentQuery)
+            console.log(saveData)
             main()
             break 
         case 'addRole':
@@ -42,6 +46,11 @@ async function main(){
             console.log(responses)
            main()
             break 
+        case 'showDepartments':
+                responses= await dbHelper.executeQuery(showDpt())
+               console.table(responses)
+              main()
+               break 
         default:  
             console.log('wrong choice')
             main()

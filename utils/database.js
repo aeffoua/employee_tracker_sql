@@ -4,13 +4,18 @@ class DbHelper{
     constructor(){
        
     }
-    static async connection(){
+    async connection(){
        return new Promise((resolve,reject)=>{
             try{
                 const connection = mysql.createConnection({
-                    host: 'localhost',
-                    user: 'root',
-                    database: 'test'
+                    
+                      connectionLimit: 10,
+                     host: "127.0.0.1",
+                      port: 3306,
+                      waitForConnections: true, 
+                      user: "root",
+                      database: "employee_tracker_db",
+                      password:"MyGodisgood12@"
                   });
                   return resolve(connection)
             }
@@ -20,7 +25,7 @@ class DbHelper{
             }
        })
     }
-    static async getInstance(){
+    async getInstance(){
         if(!this.instance){
             try {
                 this.instance= await this.connection()
@@ -31,15 +36,24 @@ class DbHelper{
         }
         return this.instance
     }
-    static async executeQuery(query){
+    async executeQuery(query){
         return new Promise(async(resolve, reject)=>{
             try {
                 let pool=await this.getInstance()
                 if (pool){
-                    let data=await pool.execute(query)
-                    return resolve (data) 
+                     pool.query(query,(error,results,fields)=>{
+                        if (error){
+                            console.log(error)
+                             reject (error)
+                        }
+                         else{
+                            resolve(results)
+                        }
+                         pool.end()
+                     })
+                    
                 }
-                return reject(pool)
+                
             } catch (error) {
                 console.error('error cannot reach server',error.message)
                 reject(error)
@@ -48,3 +62,5 @@ class DbHelper{
 
     }
 }
+const dbHelper = new DbHelper()
+module.exports= {dbHelper}
