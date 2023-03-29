@@ -1,6 +1,8 @@
 function showEmployee () {
     return `
-    select * from employees
+    select e.first_name, e.last_name, d.name, r.title, r.salary from employees as e inner join 
+    roles as r on e.role_id=r.id inner join 
+    departments as d on r.department_id= d.id
     `}
  function generateRole({salary,department,title}) {
         return `
@@ -13,7 +15,7 @@ function generateDpt(name) {
     }
 function generateEmployee({first_name,last_name,role_id}) {
         return `
-        insert into roles(first_name,last_name,role_id) values('${first_name}','${last_name}',${role_id})`
+        insert into employees (first_name,last_name,role_id) values('${first_name}','${last_name}',${role_id})`
     }
 function showRoles () {
         return `
@@ -38,6 +40,7 @@ function getRoleTitle(){
     select title as name from roles
     `
 }
+
     
 module.exports={
     showEmployee,
@@ -49,7 +52,7 @@ module.exports={
     getDepartmentId,
     getRoleId,
     getRoleTitle
-
+    
 }
 
 

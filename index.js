@@ -1,7 +1,7 @@
 const InquirerHelper= require('./utils/inquirerHelper.js')
 const {menuQuestions, addDepartmentQuestions, addRoleQuestions, addEmployeeQuestions}= require ('./utils/questions')
 let inquirerHelper= new InquirerHelper([])
-const {generateDpt,showDpt, getDepartmentId, generateRole, showRoles, generateEmployee, getRoleTitle, getRoleId}= require('./utils/queries.js')
+const {generateDpt,showDpt, getDepartmentId, generateRole, showRoles, generateEmployee, getRoleTitle, getRoleId,showEmployee}= require('./utils/queries.js')
 const {dbHelper}= require('./utils/database')
 
 
@@ -21,7 +21,6 @@ async function main(){
     
     let choice = await showMenu()
     let responses 
-    console.log(choice)
     switch(choice.menuChoice){
         case 'addDepartment':
             responses= await showQuestions(addDepartmentQuestions)
@@ -74,16 +73,16 @@ async function main(){
                     console.table(responses)
                     main()
                     break
+        case 'showEmployees':
+            responses= await getEmployee()
+            console.table(responses)
+            main()
+            break 
         default:  
             console.log('wrong choice')
             main()
 
          
-            
-        
-
-
-
     }
 }
 async function getDepartment(){
@@ -97,6 +96,10 @@ async function getRoles(){
 }
 async function getRoleByTitle(){
     let responses= await dbHelper.executeQuery(getRoleTitle())
+    return responses 
+}
+async function getEmployee(){
+    let responses= await dbHelper.executeQuery(showEmployee())
     return responses 
 }
 main()
